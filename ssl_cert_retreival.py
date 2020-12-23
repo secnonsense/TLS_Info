@@ -3,13 +3,13 @@ import ssl, socket, argparse
 parser = argparse.ArgumentParser()
 
 parser.add_argument("-n", "--name", help="Display Common Name of Certificate", action="store_true")
-parser.add_argument("-x", "--selected_cipher", help="DisplayPort  app the negotiated cipher", action="store_true")
+parser.add_argument("-x", "--selected_cipher", help="Display the negotiated cipher", action="store_true")
 parser.add_argument("-s", "--subject", help="Display the Certificate subject information", action="store_true")
 parser.add_argument("-c", "--ciphers", help="Display ciphers offered by server", action="store_true")
 parser.add_argument("-i", "--issuer", help="Diplay Certificate Issuer", action="store_true")
-parser.add_argument("-f", "--file", help="Specify input file", action="store")
+parser.add_argument("-f", "--file", help="Specify input file with a list of hostnames to be checked", action="store")
 parser.add_argument("-o", "--out", help="Specify output file", action="store")
-parser.add_argument("-d", "--domain", help="Specify domain name", action="store")
+parser.add_argument("-d", "--domain", help="Specify domain name of host to be checked", action="store")
 
 args = parser.parse_args()
 
