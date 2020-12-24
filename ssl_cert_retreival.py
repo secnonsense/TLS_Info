@@ -13,6 +13,11 @@ parser.add_argument("-d", "--domain", help="Specify domain name of host to be ch
 
 args = parser.parse_args()
 
+if (not args.domain and not args.file) or (args.domain and args.file):
+        print("\nEither a single site's domain or a file containing sites must be used as input\n")
+        parser.print_help()
+        quit()
+
 if args.out:
   output=open(args.out, "w")
 
