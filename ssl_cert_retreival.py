@@ -31,10 +31,10 @@ def process_ssl(host):
         selected_cipher = sock.cipher()
         cert = sock.getpeercert()
 
-    subject = dict(x[0] for x in cert['subject'])
+    subject = dict(_[0] for _ in cert['subject'])
     issued_to = subject['commonName']
-    issuer = dict(x[0] for x in cert['issuer'])
-    issued_by = issuer['commonName'] # not used
+    issuer = dict(_[0] for _ in cert['issuer'])
+    issued_by = issuer['commonName'] 
 
     print(f"Site: {hostname}")
     if args.out:
