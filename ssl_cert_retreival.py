@@ -2,28 +2,29 @@ import ssl
 import socket
 import argparse
 
-parser = argparse.ArgumentParser()
 
-parser.add_argument("-n", "--name", help="Display Common Name of Certificate", action="store_true")
-parser.add_argument("-x", "--selected_cipher", help="Display the negotiated cipher", action="store_true")
-parser.add_argument("-s", "--subject", help="Display the Certificate subject information", action="store_true")
-parser.add_argument("-c", "--ciphers", help="Display ciphers offered by server", action="store_true")
-parser.add_argument("-i", "--issuer", help="Diplay Certificate Issuer", action="store_true")
-parser.add_argument("-f", "--file", help="Specify input file with a list of hostnames to be checked", action="store")
-parser.add_argument("-o", "--out", help="Specify output file", action="store")
-parser.add_argument("-d", "--domain", help="Specify domain name of host to be checked", action="store")
+def parse_args():
+  parser = argparse.ArgumentParser()
 
-args = parser.parse_args()
+  parser.add_argument("-n", "--name", help="Display Common Name of Certificate", action="store_true")
+  parser.add_argument("-x", "--selected_cipher", help="Display the negotiated cipher", action="store_true")
+  parser.add_argument("-s", "--subject", help="Display the Certificate subject information", action="store_true")
+  parser.add_argument("-c", "--ciphers", help="Display ciphers offered by server", action="store_true")
+  parser.add_argument("-i", "--issuer", help="Diplay Certificate Issuer", action="store_true")
+  parser.add_argument("-f", "--file", help="Specify input file with a list of hostnames to be checked", action="store")
+  parser.add_argument("-o", "--out", help="Specify output file", action="store")
+  parser.add_argument("-d", "--domain", help="Specify domain name of host to be checked", action="store")
 
-if (not args.domain and not args.file) or (args.domain and args.file):
-        print("\nEither a single site's domain or a file containing sites must be used as input\n")
-        parser.print_help()
-        quit()
+  args = parser.parse_args()
 
-if args.out:
-  output=open(args.out, "w")
+  if (not args.domain and not args.file) or (args.domain and args.file):
+          print("\nEither a single site's domain or a file containing sites must be used as input\n")
+          parser.print_help()
+          quit()
+  return args
 
-def process_ssl(host):  
+
+def process_ssl(host,args,output):  
     hostname=host.strip()
     context = ssl.create_default_context()
     with context.wrap_socket(socket.socket(), server_hostname=hostname) as sock:
@@ -46,6 +47,7 @@ def process_ssl(host):
       print(f"Issued by: {issued_by}")
       if args.out:
         output.write("\nIssuer: " + issuer['organizationName'])
+        output.write("\nIssued by: " + issued_by)
     if args.subject:
       print(f"Subject: {subject}")
       if args.out:
@@ -68,12 +70,15 @@ def process_ssl(host):
 
 
 def main():
+  args=parse_args()
+  if args.out:
+    output=open(args.out, "w")
   if args.file:
     with open(args.file,"r") as file:
       hosts = file.readlines() 
       for host in hosts:
         try:
-          process_ssl(host)
+          process_ssl(host,args,output)
         except:
           continue
   elif args.domain:
@@ -82,6 +87,7 @@ def main():
     print("No input detected")
   if args.out:
     output.close()
+
 
 if __name__ == "__main__":
     main()
