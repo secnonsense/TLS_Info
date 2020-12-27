@@ -1,4 +1,6 @@
-import ssl, socket, argparse
+import ssl
+import socket
+import argparse
 
 parser = argparse.ArgumentParser()
 
