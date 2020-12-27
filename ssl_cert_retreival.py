@@ -34,13 +34,14 @@ def process_ssl(host):
     subject = dict(x[0] for x in cert['subject'])
     issued_to = subject['commonName']
     issuer = dict(x[0] for x in cert['issuer'])
-    issued_by = issuer['commonName']
+    issued_by = issuer['commonName'] # not used
 
     print(f"Site: {hostname}")
     if args.out:
       output.write("Site: " + hostname)
     if args.issuer:
       print(f"Issuer:  {issuer['organizationName']}")
+      print(f"Issued by: {issued_by}")
       if args.out:
         output.write("\nIssuer: " + issuer['organizationName'])
     if args.subject:
@@ -66,21 +67,19 @@ def process_ssl(host):
 
 def main():
   if args.file:
-    file=open(args.file,"r")
-    hosts = file.readlines() 
-    for host in hosts:
-      try:
-        process_ssl(host)
-      except:
-        continue
+    with open(args.file,"r") as file:
+      hosts = file.readlines() 
+      for host in hosts:
+        try:
+          process_ssl(host)
+        except:
+          continue
   elif args.domain:
     process_ssl(args.domain)
   else:
     print("No input detected")
   if args.out:
     output.close()
-  if args.file:
-    file.close()
 
 if __name__ == "__main__":
     main()
