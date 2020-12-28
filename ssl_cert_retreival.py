@@ -71,6 +71,7 @@ def process_ssl(host,args,output):
 
 def main():
   args=parse_args()
+  output=False
   if args.out:
     output=open(args.out, "w")
   if args.file:
@@ -79,14 +80,15 @@ def main():
       for host in hosts:
         try:
           process_ssl(host,args,output)
-        except:
+        except Exception: 
           continue
   elif args.domain:
-    process_ssl(args.domain)
+    process_ssl(args.domain,args)
   else:
     print("No input detected")
   if args.out:
     output.close()
+
 
 
 if __name__ == "__main__":
