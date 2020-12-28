@@ -83,7 +83,7 @@ def main():
         except Exception: 
           continue
   elif args.domain:
-    process_ssl(args.domain,args)
+    process_ssl(args.domain,args,output)
   else:
     print("No input detected")
   if args.out:
