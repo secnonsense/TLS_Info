@@ -71,7 +71,7 @@ def process_ssl(host,args,output):
 
 def main():
   args=parse_args()
-  output=False
+  output=None
   if args.out:
     output=open(args.out, "w")
   if args.file:
