@@ -7,6 +7,8 @@ def parse_args():
   parser = argparse.ArgumentParser()
 
   parser.add_argument("-n", "--name", help="Display Common Name of Certificate", action="store_true")
+  parser.add_argument("-e", "--expiration", help="Display Certificate Expiration", action="store_true")
+  parser.add_argument("-b", "--before", help="Display Certificate's do not use before date", action="store_true")
   parser.add_argument("-x", "--selected_cipher", help="Display the negotiated cipher", action="store_true")
   parser.add_argument("-s", "--subject", help="Display the Certificate subject information", action="store_true")
   parser.add_argument("-c", "--ciphers", help="Display ciphers offered by server", action="store_true")
@@ -37,8 +39,10 @@ def process_ssl(host,args,output):
     subject = dict(_[0] for _ in cert['subject'])
     issued_to = subject['commonName']
     issuer = dict(_[0] for _ in cert['issuer'])
-    issued_by = issuer['commonName'] 
-
+    issued_by = issuer['commonName']
+    not_before = (cert['notBefore'])
+    not_after = (cert['notAfter']) 
+    
     print(f"Site: {hostname}")
     if args.out:
       output.write("Site: " + hostname)
@@ -52,6 +56,14 @@ def process_ssl(host,args,output):
       print(f"Subject: {subject}")
       if args.out:
         output.write("\nSubject: " + subject)
+    if args.expiration:
+      print(f"Certificate Expiration: {not_after}")
+      if args.out:
+        output.write("\nCertificate Expiration: " + not_after)
+    if args.before:
+      print(f"Certificate don't use before: {not_before}")
+      if args.out:
+        output.write("\nCertificate don't use before: " + not_before)
     if args.name:
       print(f"Certificate Common Name: {issued_to}")
       if args.out:
