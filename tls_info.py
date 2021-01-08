@@ -8,7 +8,7 @@ def parse_args():
 
   parser.add_argument("-n", "--name", help="Display Common Name of Certificate", action="store_true")
   parser.add_argument("-e", "--expiration", help="Display Certificate Expiration", action="store_true")
-  parser.add_argument("-b", "--before", help="Display Certificate's do not use before date", action="store_true")
+  parser.add_argument("-a", "--activation", help="Display Certificate's activation date", action="store_true")
   parser.add_argument("-x", "--selected_cipher", help="Display the negotiated cipher", action="store_true")
   parser.add_argument("-s", "--subject", help="Display the Certificate subject information", action="store_true")
   parser.add_argument("-c", "--ciphers", help="Display ciphers offered by server", action="store_true")
@@ -60,10 +60,10 @@ def process_ssl(host,args,output):
       print(f"Certificate Expiration: {not_after}")
       if args.out:
         output.write("\nCertificate Expiration: " + not_after)
-    if args.before:
-      print(f"Certificate don't use before: {not_before}")
+    if args.activation:
+      print(f"Certificate Activation: {not_before}")
       if args.out:
-        output.write("\nCertificate don't use before: " + not_before)
+        output.write("\nCertificate Activation: " + not_before)
     if args.name:
       print(f"Certificate Common Name: {issued_to}")
       if args.out:
