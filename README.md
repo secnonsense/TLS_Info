@@ -1,7 +1,8 @@
 # TLS_Info
 
-Inspired by a stack overflow answer, this is a simple script that pulls domains from a file and retrieves their SSL certificate from the website and prints out the site name and issuer as well as saves them to a specified file.  
+Inspired by a stack overflow answer, this is a simple script that pulls domains from a file, retrieves the TLS certificate from the related website and then prints out the site name, cert issuer, expiration, and other TLS related information.  
 
+Args:
 
 "-n", "--name", "Display Common Name of Certificate"  
 "-e", "--expiration", "Display Certificate Expiration"  
