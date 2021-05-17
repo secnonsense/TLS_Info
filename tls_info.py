@@ -29,13 +29,15 @@ def parse_args():
 def process_ssl(host,args,output):  
     hostname=host.strip()
     context = ssl.create_default_context()
+    #context.check_hostname = False
+    #context.verify_mode = ssl.CERT_NONE
     with context.wrap_socket(socket.socket(), server_hostname=hostname) as sock:
         sock.settimeout(4)
         sock.connect((hostname, 443))
         ciphers = sock.shared_ciphers()
         selected_cipher = sock.cipher()
         cert = sock.getpeercert()
-
+    
     subject = dict(_[0] for _ in cert['subject'])
     issued_to = subject['commonName']
     issuer = dict(_[0] for _ in cert['issuer'])
